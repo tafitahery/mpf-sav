@@ -8,7 +8,7 @@ const Container = styled.div`
   right: 0;
   background-color: black;
   color: lightgray;
-  display: flex;
+  display: ${({ isHidden }) => (isHidden ? 'none' : 'flex')};
   align-items: center;
 `;
 
@@ -22,6 +22,7 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   font-size: 24px;
+
   &:hover {
     font-size: 26px;
   }
@@ -32,24 +33,38 @@ const StyledLink = styled(Link)`
   color: inherit;
 `;
 
-export default function Menu() {
+export default function Menu({ isHidden, setIsHidden }) {
+  const handleClick = () => {
+    setIsHidden(true);
+  };
+
   return (
-    <Container>
+    <Container isHidden={isHidden}>
       <List>
         <ListItem>
-          <StyledLink to="/">Intervention</StyledLink>
+          <StyledLink to="/" onClick={handleClick}>
+            Intervention
+          </StyledLink>
         </ListItem>
         <ListItem>
-          <StyledLink to="/client">Client</StyledLink>
+          <StyledLink to="/client" onClick={handleClick}>
+            Client
+          </StyledLink>
         </ListItem>
         <ListItem>
-          <StyledLink to="/machine">Machine</StyledLink>
+          <StyledLink to="/machine" onClick={handleClick}>
+            Machine
+          </StyledLink>
         </ListItem>
         <ListItem>
-          <StyledLink to="/technician">Technicien</StyledLink>
+          <StyledLink to="/technician" onClick={handleClick}>
+            Technicien
+          </StyledLink>
         </ListItem>
         <ListItem>
-          <StyledLink to="/report">Rapport</StyledLink>
+          <StyledLink to="/report" onClick={handleClick}>
+            Rapport
+          </StyledLink>
         </ListItem>
       </List>
     </Container>

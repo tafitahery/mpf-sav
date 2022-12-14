@@ -29,11 +29,11 @@ const Bare = styled.span`
   background-color: white;
 `;
 
-export default function Navbar() {
+export default function Navbar({ isHidden, setIsHidden }) {
   return (
     <Container>
       <Logo>.mfpSAV</Logo>
-      <Hamburger>
+      <Hamburger onClick={() => setIsHidden(!isHidden)}>
         <Bare></Bare>
         <Bare></Bare>
         <Bare></Bare>
