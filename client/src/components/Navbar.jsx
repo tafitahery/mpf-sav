@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import Title from '../components/Title';
+
 const Container = styled.div`
   height: 50px;
   background-color: black;
@@ -30,9 +32,19 @@ const Bare = styled.span`
 `;
 
 export default function Navbar({ isHidden, setIsHidden }) {
+  const name = window.location.href.split('/')[3];
+  const title = {
+    '': 'Intervention',
+    machine: 'Machine',
+    client: 'Client',
+    technician: 'Technicien',
+    report: 'Rapport',
+  };
+
   return (
     <Container>
       <Logo>.mfpSAV</Logo>
+      <Title title={title[name]} />
       <Hamburger onClick={() => setIsHidden(!isHidden)}>
         <Bare></Bare>
         <Bare></Bare>
