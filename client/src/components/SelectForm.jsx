@@ -7,20 +7,23 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Input = styled.input`
-  width: 300px;
+const StyledSelect = styled.select`
   padding: 10px;
   border-radius: 5px;
   font-size: 16px;
 `;
 
-export default function InputForm(props) {
-  const { label, ...other } = props;
+const StyledOption = styled.option``;
 
+export default function SelectForm({ label, options }) {
   return (
     <Container>
       <LabelForm label={label} />
-      <Input {...other} />
+      <StyledSelect>
+        {options.map((option) => (
+          <StyledOption key={option.id}>{option.role}</StyledOption>
+        ))}
+      </StyledSelect>
     </Container>
   );
 }

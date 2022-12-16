@@ -2,13 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
-  width: 75px;
+  width: max-content;
   padding: 10px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  margin: 10px 0px;
-  background-color: ${({ action }) => (action === 'valid' ? 'teal' : 'red')};
+  background-color: ${({ backgroundColor }) => backgroundColor};
   color: white;
   cursor: pointer;
 `;

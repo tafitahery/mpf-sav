@@ -2,6 +2,7 @@ import Menu from './components/Menu';
 import Navbar from './components/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
+import Technician from './page/Technician';
 
 function App() {
   const [isHidden, setIsHidden] = useState(true);
@@ -10,7 +11,9 @@ function App() {
     <BrowserRouter>
       <Navbar isHidden={isHidden} setIsHidden={setIsHidden} />
       <Menu isHidden={isHidden} setIsHidden={setIsHidden} />
-      <Routes></Routes>
+      <Routes>
+        <Route path="/technician" element={<Technician />} />
+      </Routes>
     </BrowserRouter>
   );
 }
