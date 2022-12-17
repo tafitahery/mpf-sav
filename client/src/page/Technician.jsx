@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -83,11 +83,22 @@ export default function Technician() {
 
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
+  const [techs, setTechs] = useState([]);
+
+  useEffect(() => {
+    fetchTech();
+  }, []);
+
+  const fetchTech = async () => {
+    const { data } = await axios.get('http://localhost:5000/technicians');
+    setTechs(data);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:5000/technicians', { name, role });
+      await fetchTech();
     } catch (error) {
       console.log(error);
     } finally {
@@ -128,20 +139,15 @@ export default function Technician() {
             </StyledTr>
           </thead>
           <tbody>
-            <StyledTr>
-              <StyledTd>Tafita</StyledTd>
-              <StyledTd>Technicien</StyledTd>
-              <StyledTd>
-                <ButtonForm name="Supprimer" backgroundColor="red" />
-              </StyledTd>
-            </StyledTr>
-            <StyledTr>
-              <StyledTd>Gerard</StyledTd>
-              <StyledTd>Technicien</StyledTd>
-              <StyledTd>
-                <ButtonForm name="Supprimer" backgroundColor="red" />
-              </StyledTd>
-            </StyledTr>
+            {techs.map((tech) => (
+              <StyledTr key={tech.id}>
+                <StyledTd>{tech.name}</StyledTd>
+                <StyledTd>{tech.role}</StyledTd>
+                <StyledTd>
+                  <ButtonForm name="Supprimer" backgroundColor="red" />
+                </StyledTd>
+              </StyledTr>
+            ))}
           </tbody>
         </StyledTable>
       </Right>
