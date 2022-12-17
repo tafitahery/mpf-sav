@@ -15,13 +15,18 @@ const StyledSelect = styled.select`
 
 const StyledOption = styled.option``;
 
-export default function SelectForm({ label, options }) {
+export default function SelectForm(props) {
+  const { label, options, action, ...other } = props;
+
   return (
     <Container>
       <LabelForm label={label} />
-      <StyledSelect>
+      <StyledSelect {...other} onChange={(e) => action(e.target.value)}>
+        <StyledOption value=""></StyledOption>
         {options.map((option) => (
-          <StyledOption key={option.id}>{option.role}</StyledOption>
+          <StyledOption key={option.id} value={option.role}>
+            {option.role}
+          </StyledOption>
         ))}
       </StyledSelect>
     </Container>

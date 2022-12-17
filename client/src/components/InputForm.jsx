@@ -15,12 +15,12 @@ const Input = styled.input`
 `;
 
 export default function InputForm(props) {
-  const { label, ...other } = props;
+  const { label, action, ...other } = props;
 
   return (
     <Container>
       <LabelForm label={label} />
-      <Input {...other} />
+      <Input {...other} onChange={(e) => action(e.target.value)} />
     </Container>
   );
 }

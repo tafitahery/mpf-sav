@@ -1,0 +1,19 @@
+{
+  "technicians": [
+    {
+      "name": "Gerard",
+      "role": "Administrateur",
+      "id": 1
+    },
+    {
+      "name": "Tafita",
+      "role": "Technicien",
+      "id": 2
+    },
+    {
+      "name": "Rajo",
+      "role": "Technicien",
+      "id": 3
+    }
+  ]
+}
