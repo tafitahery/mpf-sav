@@ -5,6 +5,7 @@ import axios from 'axios';
 import ButtonForm from '../components/ButtonForm';
 import InputForm from '../components/InputForm';
 import SelectForm from '../components/SelectForm';
+import { fetchData } from '../utils/api';
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -80,30 +81,53 @@ export default function Technician() {
     { id: 1, role: 'Administrateur' },
     { id: 2, role: 'Technicien' },
   ];
+  const url = 'http://localhost:5000/technicians';
 
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [techs, setTechs] = useState([]);
+  const [id, setId] = useState(null);
 
   useEffect(() => {
-    fetchTech();
+    fetchData(url, setTechs);
   }, []);
 
-  const fetchTech = async () => {
-    const { data } = await axios.get('http://localhost:5000/technicians');
-    setTechs(data);
-  };
-
   const handleSubmit = async (e) => {
+    const data = { name, role };
+
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/technicians', { name, role });
-      await fetchTech();
+      if (!id) {
+        await axios.post(url, data);
+      } else {
+        await axios.put(url + '/' + id, data);
+      }
+      await fetchData(url, setTechs);
     } catch (error) {
       console.log(error);
     } finally {
       setRole('');
       setName('');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(url + '/' + id);
+      await fetchData(url, setTechs);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEdit = async (id) => {
+    try {
+      const { data } = await axios.get(url + '/' + id);
+      setName(data.name);
+      setRole(data.role);
+      setId(id);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -144,7 +168,16 @@ export default function Technician() {
                 <StyledTd>{tech.name}</StyledTd>
                 <StyledTd>{tech.role}</StyledTd>
                 <StyledTd>
-                  <ButtonForm name="Supprimer" backgroundColor="red" />
+                  <ButtonForm
+                    name="Editer"
+                    backgroundColor="#33B8FF"
+                    onClick={() => handleEdit(tech.id)}
+                  />{' '}
+                  <ButtonForm
+                    name="Supprimer"
+                    backgroundColor="#FF5733"
+                    onClick={() => handleDelete(tech.id)}
+                  />
                 </StyledTd>
               </StyledTr>
             ))}
