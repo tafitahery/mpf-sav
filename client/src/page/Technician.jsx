@@ -6,6 +6,7 @@ import ButtonForm from '../components/ButtonForm';
 import InputForm from '../components/InputForm';
 import SelectForm from '../components/SelectForm';
 import { fetchData } from '../utils/api';
+import TableForm from '../components/TableForm';
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -47,89 +48,49 @@ const Right = styled.div`
   overflow: scroll;
 `;
 
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-`;
-
-const StyledTr = styled.tr`
-  &:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  &:hover {
-    background-color: #ddd;
-  }
-`;
-
-const StyledTh = styled.th`
-  border: 1px solid #ddd;
-  padding: 8px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: black;
-  color: white;
-`;
-
-const StyledTd = styled.td`
-  border: 1px solid #ddd;
-  padding: 8px;
-`;
-
 export default function Technician() {
-  const options = [
-    { id: 1, role: 'Administrateur' },
-    { id: 2, role: 'Technicien' },
+  const roles = [
+    { id: 1, value: 'Administrateur' },
+    { id: 2, value: 'Technicien' },
+  ];
+  const tableTitle = [
+    { id: 1, value: 'Nom' },
+    { id: 2, value: 'Role' },
+    { id: 3, value: 'Action' },
   ];
   const url = 'http://localhost:5000/technicians';
 
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('');
+  const [technician, setTechnician] = useState({
+    name: '',
+    role: '',
+    id: null,
+  });
+
   const [techs, setTechs] = useState([]);
-  const [id, setId] = useState(null);
 
   useEffect(() => {
     fetchData(url, setTechs);
   }, []);
 
   const handleSubmit = async (e) => {
-    const data = { name, role };
+    const data = { name: technician.name, role: technician.role };
 
     e.preventDefault();
     try {
-      if (!id) {
+      if (!technician.id) {
         await axios.post(url, data);
       } else {
-        await axios.put(url + '/' + id, data);
+        await axios.put(url + '/' + technician.id, data);
       }
       await fetchData(url, setTechs);
     } catch (error) {
       console.log(error);
     } finally {
-      setRole('');
-      setName('');
+      setTechnician((prev) => ({ ...prev, name: '', role: '' }));
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(url + '/' + id);
-      await fetchData(url, setTechs);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleEdit = async (id) => {
-    try {
-      const { data } = await axios.get(url + '/' + id);
-      setName(data.name);
-      setRole(data.role);
-      setId(id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  console.log(technician);
 
   return (
     <Container>
@@ -139,50 +100,26 @@ export default function Technician() {
           <InputForm
             label="Nom"
             type="text"
+            name="name"
             placeholder="Saisir un nom"
-            value={name}
-            action={setName}
+            value={technician.name}
+            action={setTechnician}
+            required
           />
           <SelectForm
             label="Role"
-            options={options}
-            value={role}
-            action={setRole}
+            name="role"
+            options={roles}
+            value={technician.role}
+            action={setTechnician}
+            required
           />
           <ButtonForm name="Valider" backgroundColor="teal" type="submit" />
         </Form>
       </Left>
       <Right>
         <StyledTitle>Liste des techniciens</StyledTitle>
-        <StyledTable>
-          <thead>
-            <StyledTr>
-              <StyledTh>Nom</StyledTh>
-              <StyledTh>Role</StyledTh>
-              <StyledTh>Action</StyledTh>
-            </StyledTr>
-          </thead>
-          <tbody>
-            {techs.map((tech) => (
-              <StyledTr key={tech.id}>
-                <StyledTd>{tech.name}</StyledTd>
-                <StyledTd>{tech.role}</StyledTd>
-                <StyledTd>
-                  <ButtonForm
-                    name="Editer"
-                    backgroundColor="#33B8FF"
-                    onClick={() => handleEdit(tech.id)}
-                  />{' '}
-                  <ButtonForm
-                    name="Supprimer"
-                    backgroundColor="#FF5733"
-                    onClick={() => handleDelete(tech.id)}
-                  />
-                </StyledTd>
-              </StyledTr>
-            ))}
-          </tbody>
-        </StyledTable>
+        <TableForm titles={tableTitle} data={techs} />
       </Right>
     </Container>
   );

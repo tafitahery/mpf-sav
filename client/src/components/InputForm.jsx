@@ -20,7 +20,12 @@ export default function InputForm(props) {
   return (
     <Container>
       <LabelForm label={label} />
-      <Input {...other} onChange={(e) => action(e.target.value)} />
+      <Input
+        {...other}
+        onChange={(e) =>
+          action((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+        }
+      />
     </Container>
   );
 }

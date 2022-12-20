@@ -21,11 +21,16 @@ export default function SelectForm(props) {
   return (
     <Container>
       <LabelForm label={label} />
-      <StyledSelect {...other} onChange={(e) => action(e.target.value)}>
+      <StyledSelect
+        {...other}
+        onChange={(e) =>
+          action((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+        }
+      >
         <StyledOption value=""></StyledOption>
         {options.map((option) => (
-          <StyledOption key={option.id} value={option.role}>
-            {option.role}
+          <StyledOption key={option.id} value={option.value}>
+            {option.value}
           </StyledOption>
         ))}
       </StyledSelect>

@@ -20,5 +20,37 @@
       "role": "Technicien",
       "id": 4
     }
+  ],
+  "machines": [
+    {
+      "model": "AR-6023N",
+      "type": "Copieur",
+      "color": "Noir et Blanc",
+      "id": 2
+    },
+    {
+      "model": "MX-2010U",
+      "type": "Copieur",
+      "color": "Couleur",
+      "id": 3
+    },
+    {
+      "model": "XE-A207W",
+      "type": "Caisse",
+      "color": "",
+      "id": 4
+    },
+    {
+      "model": "XE-A307W",
+      "type": "Caisse",
+      "color": "",
+      "id": 5
+    },
+    {
+      "model": "DX-2000",
+      "type": "Copieur",
+      "color": "Couleur",
+      "id": 6
+    }
   ]
 }
