@@ -86,11 +86,9 @@ export default function Technician() {
     } catch (error) {
       console.log(error);
     } finally {
-      setTechnician((prev) => ({ ...prev, name: '', role: '' }));
+      setTechnician((prev) => ({ ...prev, name: '', role: '', id: null }));
     }
   };
-
-  console.log(technician);
 
   return (
     <Container>
@@ -119,7 +117,13 @@ export default function Technician() {
       </Left>
       <Right>
         <StyledTitle>Liste des techniciens</StyledTitle>
-        <TableForm titles={tableTitle} data={techs} />
+        <TableForm
+          titles={tableTitle}
+          data={techs}
+          setData={setTechs}
+          url={url}
+          setElement={setTechnician}
+        />
       </Right>
     </Container>
   );

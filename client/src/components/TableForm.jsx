@@ -1,4 +1,6 @@
+import axios from 'axios';
 import styled from 'styled-components';
+import { fetchData } from '../utils/api';
 
 import ButtonForm from './ButtonForm';
 
@@ -31,7 +33,7 @@ const StyledTd = styled.td`
   padding: 8px;
 `;
 
-export default function TableForm({ titles, data }) {
+export default function TableForm({ titles, setData, data, url, setElement }) {
   const keys = (obj) => {
     let res = [];
     const array = Object.keys(obj);
@@ -43,25 +45,23 @@ export default function TableForm({ titles, data }) {
     return res;
   };
 
-  // const handleDelete = async (id) => {
-  //   try {
-  //     await axios.delete(url + '/' + id);
-  //     await fetchData(url, setTechs);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(url + '/' + id);
+      await fetchData(url, setData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  // const handleEdit = async (id) => {
-  //   try {
-  //     const { data } = await axios.get(url + '/' + id);
-  //     setName(data.name);
-  //     setRole(data.role);
-  //     setId(id);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleEdit = async (id) => {
+    try {
+      const { data } = await axios.get(url + '/' + id);
+      setElement((prev) => ({ ...prev, ...data }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <StyledTable>
@@ -82,12 +82,12 @@ export default function TableForm({ titles, data }) {
               <ButtonForm
                 name="Editer"
                 backgroundColor="#33B8FF"
-                // onClick={() => handleEdit(tech.id)}
+                onClick={() => handleEdit(elt.id)}
               />{' '}
               <ButtonForm
                 name="Supprimer"
                 backgroundColor="#FF5733"
-                // onClick={() => handleDelete(tech.id)}
+                onClick={() => handleDelete(elt.id)}
               />
             </StyledTd>
           </StyledTr>
